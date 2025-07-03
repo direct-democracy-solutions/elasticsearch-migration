@@ -1,0 +1,59 @@
+{
+  "name": "@ahmetkasap/elasticsearch-migration",
+  "version": "1.0.1",
+  "description": "Elasticsearch/OpenSearch migration tool",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "es-migrate": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "migrate:create": "tsx src/cli/create.ts",
+    "migrate:up": "tsx src/cli/up.ts",
+    "migrate:down": "tsx src/cli/down.ts",
+    "migrate:status": "tsx src/cli/status.ts",
+    "migrate:list-indices": "tsx src/cli/list-indices.ts",
+    "migrate:alias-info": "tsx src/cli/alias-info.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "elasticsearch",
+    "opensearch",
+    "migration",
+    "database",
+    "schema",
+    "cli",
+    "typescript"
+  ],
+  "author": "Ahmet Kasap",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmetkasap/elasticsearch-migration.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ahmetkasap/elasticsearch-migration/issues"
+  },
+  "homepage": "https://github.com/ahmetkasap/elasticsearch-migration#readme",
+  "dependencies": {
+    "@ahmetkasap/elasticsearch-migration": "^1.0.0",
+    "@opensearch-project/opensearch": "^2.4.0",
+    "commander": "^11.1.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "dist/**/*",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
