@@ -38,6 +38,17 @@ Applies all pending migrations in order.
 
 ---
 
+#### Running from a CommonJS project
+`es-migrate` runs and expects ESM. If you have a CommonJS project and
+wish to run `es-migrate`, pass an ESM loader to Node explicitly:
+
+```
+node --loader ts-node/esm node_modules/@ahmetkasap/elasticsearch-migration/dist/cli.js
+```
+`tsx` might work but hasn't been tested.
+
+Your migrations should have the `.mts` or `.mjs` file extensions, not `.ts`.
+
 ### 3. Check Migration Status
 
 ```bash
