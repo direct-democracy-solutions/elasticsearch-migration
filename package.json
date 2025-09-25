@@ -1,5 +1,5 @@
 {
-  "name": "@ahmetkasap/elasticsearch-migration",
+  "name": "@direct-democracy-solutions/elasticsearch-migration",
   "version": "1.0.1",
   "description": "Elasticsearch/OpenSearch migration tool",
   "main": "dist/index.js",
@@ -32,12 +32,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ahmetkasap/elasticsearch-migration.git"
+    "url": "git+https://github.com/direct-democracy-solutions/elasticsearch-migration.git"
   },
   "bugs": {
-    "url": "https://github.com/ahmetkasap/elasticsearch-migration/issues"
+    "url": "https://github.com/direct-democracy-solutions/elasticsearch-migration/issues"
   },
-  "homepage": "https://github.com/ahmetkasap/elasticsearch-migration#readme",
+  "homepage": "https://github.com/direct-democracy-solutions/elasticsearch-migration#readme",
   "dependencies": {
     "@ahmetkasap/elasticsearch-migration": "^1.0.0",
     "@opensearch-project/opensearch": "^2.4.0",

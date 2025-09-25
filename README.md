@@ -7,7 +7,7 @@ A migration tool for Elasticsearch/OpenSearch. This package helps you manage you
 ## 🚀 Installation
 
 ```bash
-npm install @ahmetkasap/elasticsearch-migration
+npm install @direct-democracy-solutions/elasticsearch-migration
 ```
 
 ---
@@ -98,7 +98,7 @@ MIGRATIONS_PATH=./migrations
 
 ```typescript
 import { Client } from "@opensearch-project/opensearch";
-import type { IMigration } from "@ahmetkasap/elasticsearch-migration";
+import type { IMigration } from "@direct-democracy-solutions/elasticsearch-migration";
 
 const migration: IMigration = {
   name: "create_users_index",
@@ -136,8 +136,8 @@ export default migration;
 ## 🧑‍💻 Programmatic Usage
 
 ```typescript
-import { MigrationService } from "@ahmetkasap/elasticsearch-migration";
-import type { IMigrationConfig } from "@ahmetkasap/elasticsearch-migration";
+import { MigrationService } from "@direct-democracy-solutions/elasticsearch-migration";
+import type { IMigrationConfig } from "@direct-democracy-solutions/elasticsearch-migration";
 
 const config: IMigrationConfig = {
   node: "http://localhost:9200",
