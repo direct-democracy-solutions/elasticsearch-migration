@@ -42,7 +42,7 @@ Applies all pending migrations in order.
 `es-migrate` runs and expects ESM. If you have a CommonJS project and
 wish to run `es-migrate`, pass an ESM loader to Node explicitly:
 
-```
+```bash
 node --loader ts-node/esm node_modules/@ahmetkasap/elasticsearch-migration/dist/cli.js
 ```
 `tsx` might work but hasn't been tested.

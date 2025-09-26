@@ -34,7 +34,7 @@ async function testOffline() {
 
     // Test 3: Test MigrationService instantiation (without connection)
     console.log("✅ MigrationService can be instantiated");
-    const migrationService = new MigrationService(config);
+    new MigrationService(config);
     console.log("   Service created successfully\n");
 
     // Test 4: Check package.json
