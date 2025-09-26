@@ -19,6 +19,7 @@
     "migrate:status": "tsx src/cli/status.ts",
     "migrate:list-indices": "tsx src/cli/list-indices.ts",
     "migrate:alias-info": "tsx src/cli/alias-info.ts",
+    "pre-commit": "npm format && npm run lint && npm run build",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
