@@ -1,0 +1,16 @@
+name: "Setup"
+description: "Set up Node and install project dependencies"
+inputs:
+  node-version:
+    description: Node version to set up
+    required: false # Defaults to "node-version-file"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        check-latest: true
+        cache: "npm"
+        cache-dependency-path: "package-lock.json"
