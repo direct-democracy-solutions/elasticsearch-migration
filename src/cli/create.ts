@@ -4,7 +4,7 @@ import type { IMigrationConfig } from "../types/migration.interface.js";
 
 export async function createMigration(
   migrationName: string,
-  config: IMigrationConfig
+  config: IMigrationConfig,
 ) {
   try {
     if (!migrationName) {
@@ -22,7 +22,7 @@ export async function createMigration(
     const timestamp = Date.now();
     const fileName = `${timestamp}_${migrationName.replace(
       /[^a-zA-Z0-9]/g,
-      "_"
+      "_",
     )}.mts`;
     const filePath = path.join(migrationsDir, fileName);
 
