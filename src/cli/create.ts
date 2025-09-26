@@ -29,7 +29,7 @@ export async function createMigration(
 
     // Migration template
     const migrationTemplate = `import { Client } from "@opensearch-project/opensearch";
-import type { IMigration } from "elastic-migrate";
+import type { IMigration } from '@direct-democracy-solutions/elasticsearch-migration';
 
 const migration: IMigration = {
 	name: "${migrationName}",
