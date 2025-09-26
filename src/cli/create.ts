@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import { MigrationService } from "../services/migration.service.js";
 import type { IMigrationConfig } from "../types/migration.interface.js";
 
 export async function createMigration(
