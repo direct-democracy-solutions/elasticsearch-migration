@@ -215,12 +215,12 @@ npm run build
 npm start
 
 # Migration commands (development)
-npm run migrate:create <name>    # Create new migration
-npm run migrate:up              # Run pending migrations
-npm run migrate:down            # Rollback last migration
-npm run migrate:status          # Check migration status
-npm run migrate:list-indices    # List all indices
-npm run migrate:alias-info      # Show alias information
+npm run migrate -- create <name>   # Create new migration
+npm run migrate -- up              # Run pending migrations
+npm run migrate -- down            # Rollback last migration
+npm run migrate -- status          # Check migration status
+npm run migrate -- list-indices    # List all indices
+npm run migrate -- alias-info      # Show alias information
 
 # Build and prepare for publish
 npm run prepublishOnly
@@ -252,5 +252,3 @@ This setup will work with the values in `.env.example`, no edits needed.
 MIT
 
 ---
-
-If you want this as a markdown file or need further formatting (badges, npm/yarn install, etc.), just let me know!

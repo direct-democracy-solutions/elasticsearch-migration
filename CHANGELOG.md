@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - An auto-formatter has been applied to all source code. This will
   probably modify every file in the bundle, but should have no effect semantically.
 
+### Removed
+
+- Stray AI output in README
+- Unused dependency on `@ahmetkasap/elasticsearch-migrate`
+
 ## [1.1.0]
 
 Improves support for CommonJS projects

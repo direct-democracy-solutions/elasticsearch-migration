@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "type": "module",
   "bin": {
-    "es-migrate": "./dist/cli.js"
+    "es-migrate": "dist/cli.js"
   },
   "scripts": {
     "format": "prettier --write --list-different .",
@@ -13,12 +13,7 @@
     "build": "tsc",
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js",
-    "migrate:create": "tsx src/cli/create.ts",
-    "migrate:up": "tsx src/cli/up.ts",
-    "migrate:down": "tsx src/cli/down.ts",
-    "migrate:status": "tsx src/cli/status.ts",
-    "migrate:list-indices": "tsx src/cli/list-indices.ts",
-    "migrate:alias-info": "tsx src/cli/alias-info.ts",
+    "migrate": "tsx src/cli.ts",
     "test": "node --experimental-vm-modules --disable-warning=ExperimentalWarning node_modules/jest/bin/jest.js",
     "prepublishOnly": "npm run build",
     "dry-release": "npm run release -- --ci --no-npm.publish --no-git.requireCleanWorkingDir --dry-run",
@@ -44,7 +39,6 @@
   },
   "homepage": "https://github.com/direct-democracy-solutions/elasticsearch-migration#readme",
   "dependencies": {
-    "@ahmetkasap/elasticsearch-migration": "^1.0.0",
     "@opensearch-project/opensearch": "^2.4.0",
     "commander": "^11.1.0",
     "dotenv": "^16.4.5"
