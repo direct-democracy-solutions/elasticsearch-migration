@@ -70,8 +70,8 @@ program
         applied.forEach((migration) => {
           console.log(
             `  ✓ ${migration.name} (${new Date(
-              migration.timestamp
-            ).toISOString()})`
+              migration.timestamp,
+            ).toISOString()})`,
           );
         });
         console.log();
@@ -82,8 +82,8 @@ program
         pending.forEach((migration) => {
           console.log(
             `  ✗ ${migration.name} (${new Date(
-              migration.timestamp
-            ).toISOString()})`
+              migration.timestamp,
+            ).toISOString()})`,
           );
         });
       } else {
