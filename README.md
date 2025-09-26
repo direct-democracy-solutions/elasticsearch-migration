@@ -10,6 +10,37 @@ A migration tool for Elasticsearch/OpenSearch. This package helps you manage you
 npm install @direct-democracy-solutions/elasticsearch-migration
 ```
 
+## 📌 Node.js Compatibility (TODO emoji, TODO better headline)
+
+We recommend limiting migrations to [erasable syntax](https://www.typescriptlang.org/tsconfig/#erasableSyntaxOnly).
+To enforce this automatically, set the `erasableSyntaxOnly` option in `tsconfig.json`.
+
+### No Erasable Syntax
+
+TypeScript migrations with no erasable syntax work out of the box on **Node v22.18.0** or later.
+
+To run TypeScript migrations on Node versions **v22.6-v22.17**, Invoke Node with `--experimental-strip-types`:
+
+```bash
+npx --node-options='--experimental-strip-types' es-migrate up
+```
+
+### Erasable Syntax
+
+To run TypeScript migrations with **non-erasable syntax** on **v22.7.0** or later, invoke Node with `--experimental-transform-types`:
+
+```bash
+npx --node-options='--experimental-strip-types' es-migrate up
+```
+
+### Node < 22.6
+
+If you are still on an older version of Node, you can write your migrations in JavaScript; or use `tsx` or `ts-node`:
+
+```bash
+tsx es-migrate up
+```
+
 ---
 
 ## ⚡️ Usage
