@@ -5,6 +5,7 @@ const migration: IMigration = {
   name: "test_migration",
   timestamp: 1751567840547,
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async up(client: Client): Promise<void> {
     // TODO: Implement your migration logic here
     // Example:
@@ -23,6 +24,7 @@ const migration: IMigration = {
     console.log("Migration test_migration executed successfully");
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async down(client: Client): Promise<void> {
     // TODO: Implement rollback logic here
     // Example:
