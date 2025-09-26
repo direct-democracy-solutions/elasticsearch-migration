@@ -5,6 +5,7 @@ const migration: IMigration = {
   name: "test_users_index",
   timestamp: 1751567936545,
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async up(client: Client): Promise<void> {
     // TODO: Implement your migration logic here
 
@@ -47,6 +48,7 @@ const migration: IMigration = {
     console.log("Migration test_users_index executed successfully");
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async down(client: Client): Promise<void> {
     // TODO: Implement rollback logic here
     // This method should undo what the 'up' method did
