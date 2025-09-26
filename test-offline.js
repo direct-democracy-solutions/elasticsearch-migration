@@ -7,7 +7,7 @@ const config = {
   node: "http://localhost:9200",
   username: "elastic",
   password: "password",
-  migrationsPath: "./migrations"
+  migrationsPath: "./migrations",
 };
 
 async function testOffline() {
@@ -22,11 +22,12 @@ async function testOffline() {
 
     // Test 2: List migration files
     if (dirExists) {
-      const files = fs.readdirSync(migrationsDir)
-        .filter(file => file.endsWith('.ts') || file.endsWith('.js'));
-      
+      const files = fs
+        .readdirSync(migrationsDir)
+        .filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
+
       console.log(`✅ Found ${files.length} migration files:`);
-      files.forEach(file => {
+      files.forEach((file) => {
         console.log(`   - ${file}`);
       });
       console.log();
@@ -38,26 +39,26 @@ async function testOffline() {
     console.log("   Service created successfully\n");
 
     // Test 4: Check package.json
-    const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+    const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"));
     console.log("✅ Package configuration:");
     console.log(`   Name: ${packageJson.name}`);
     console.log(`   Version: ${packageJson.version}`);
     console.log(`   Main: ${packageJson.main}`);
-    console.log(`   Bin: ${packageJson.bin['elastic-migrate']}`);
+    console.log(`   Bin: ${packageJson.bin["elastic-migrate"]}`);
     console.log();
 
     // Test 5: Check dist files
-    const distFiles = fs.readdirSync('./dist');
+    const distFiles = fs.readdirSync("./dist");
     console.log(`✅ Build files exist: ${distFiles.length} files`);
-    console.log(`   Files: ${distFiles.join(', ')}\n`);
+    console.log(`   Files: ${distFiles.join(", ")}\n`);
 
     // Test 6: Check CLI file
-    const cliPath = './dist/cli.js';
+    const cliPath = "./dist/cli.js";
     const cliExists = fs.existsSync(cliPath);
     console.log(`✅ CLI file exists: ${cliExists}`);
     if (cliExists) {
-      const cliContent = fs.readFileSync(cliPath, 'utf8');
-      const hasShebang = cliContent.startsWith('#!/usr/bin/env node');
+      const cliContent = fs.readFileSync(cliPath, "utf8");
+      const hasShebang = cliContent.startsWith("#!/usr/bin/env node");
       console.log(`   Has shebang: ${hasShebang}`);
     }
     console.log();
@@ -67,11 +68,10 @@ async function testOffline() {
     console.log("   1. Start Elasticsearch/OpenSearch");
     console.log("   2. Update .env file with correct credentials");
     console.log("   3. Run: elastic-migrate status");
-
   } catch (error) {
     console.error("❌ Test failed:", error.message);
     process.exit(1);
   }
 }
 
-testOffline(); 
+testOffline();

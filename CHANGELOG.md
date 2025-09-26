@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- An auto-formatter has been applied to all source code. This will
+  probably modify every file in the bundle, but should have no effect semantically.
+
 ## [1.1.0]
 Improves support for CommonJS projects
 
@@ -21,10 +26,12 @@ Improves support for CommonJS projects
 ## [1.0.1]
 
 ### Added
+
 - Near-exact copy of [@ahmetkasap/elasticsearch-migration](https://www.npmjs.com/package/@ahmetkasap/elasticsearch-migration) v1.0.1, except as listed below.
 - LICENSE.txt with copyright attribution
 
 ### Changed
+
 - Package renamed from `@ahmetkasap/elasticsearch-migration` to `@direct-democracy-solutions/elasticsearch-migration`
 - Contact names and urls
 - Generated migration scripts and example migration scripts use the new package name
