@@ -202,6 +202,9 @@ interface IMigration {
 # Install dependencies
 npm install
 
+# Test (requires configuration -- see below)
+npm test
+
 # Run in development mode
 npm run dev
 
@@ -222,6 +225,25 @@ npm run migrate:alias-info      # Show alias information
 # Build and prepare for publish
 npm run prepublishOnly
 ```
+
+### Test Configuration
+
+The test suite needs a working Elasticsearch node to test against. To
+configure the test connection:
+
+```bash
+cp .env.example .env
+```
+
+And edit the values accordingly.
+
+You can get a basic Elasticsearch instance using the Compose file:
+
+```bash
+docker-compose up -d
+```
+
+This setup will work with the values in `.env.example`, no edits needed.
 
 ---
 
