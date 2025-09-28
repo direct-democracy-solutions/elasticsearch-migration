@@ -19,6 +19,7 @@
     "migrate:status": "tsx src/cli/status.ts",
     "migrate:list-indices": "tsx src/cli/list-indices.ts",
     "migrate:alias-info": "tsx src/cli/alias-info.ts",
+    "test": "node --experimental-vm-modules --disable-warning=ExperimentalWarning node_modules/jest/bin/jest.js",
     "prepublishOnly": "npm run build",
     "dry-release": "npm run release -- --ci --no-npm.publish --no-git.requireCleanWorkingDir --dry-run",
     "release": "release-it"
@@ -50,15 +51,18 @@
   },
   "devDependencies": {
     "@release-it/keep-a-changelog": "^7.0.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^22.14.0",
     "@eslint/js": "^9.36.0",
     "@eslint/json": "^0.13.2",
     "@eslint/markdown": "^7.3.0",
     "eslint": "^9.36.0",
     "globals": "^16.4.0",
+    "jest": "^30.1.3",
     "jiti": "^2.6.0",
     "prettier": "^3.6.2",
     "release-it": "^19.0.5",
+    "ts-jest": "^29.4.4",
     "tsx": "^4.7.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.44.1"
