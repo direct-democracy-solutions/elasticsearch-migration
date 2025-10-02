@@ -26,7 +26,7 @@ Improves support for CommonJS projects
 
 ### Changed
 - Package renamed from `@ahmetkasap/elasticsearch-migration` to `@direct-democracy-solutions/elasticsearch-migration`
--  contact names and urls
+- Contact names and urls
 - Generated migration scripts and example migration scripts use the new package name
 
 [unreleased]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/1.1.0...master
