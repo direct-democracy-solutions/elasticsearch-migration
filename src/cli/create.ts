@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import { MigrationService } from "../services/migration.service.js";
 import type { IMigrationConfig } from "../types/migration.interface.js";
 
 export async function createMigration(
@@ -24,7 +23,7 @@ export async function createMigration(
     const fileName = `${timestamp}_${migrationName.replace(
       /[^a-zA-Z0-9]/g,
       "_"
-    )}.ts`;
+    )}.mts`;
     const filePath = path.join(migrationsDir, fileName);
 
     // Migration template

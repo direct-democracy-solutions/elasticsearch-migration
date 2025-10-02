@@ -75,7 +75,9 @@ export class MigrationService {
 
     const files = fs
       .readdirSync(migrationsDir)
-      .filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
+      .filter((file) => {
+        return /\.m?[tj]s$/.test(file);
+      });
 
     const migrations: IMigration[] = [];
 
