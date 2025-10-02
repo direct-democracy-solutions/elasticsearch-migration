@@ -5,6 +5,7 @@ import type {
 } from "../types/migration.interface.js";
 import fs from "fs";
 import path from "path";
+import { DeleteByQuery } from "@opensearch-project/opensearch/api/requestParams";
 
 const DEFAULT_MIGRATION_INDEX = ".migrations";
 const DEFAULT_MIGRATIONS_PATH = "./migrations";
@@ -97,9 +98,13 @@ export class MigrationService {
 
   /**
    * Get applied migrations
+   *
+   * @param name filter to migrations with a particular name (or timestamp)
    */
-  async getAppliedMigrations(): Promise<any[]> {
+  async getAppliedMigrations(name?: string | number): Promise<IMigration[]> {
     await this.init();
+    const searchTerm = name;
+    const searchKey = typeof name === "string" ? "name" : "timestamp";
 
     // Get all applied migrations from .migrations index
     const response = await this.client.search({
@@ -110,7 +115,12 @@ export class MigrationService {
       },
     });
 
-    return response.body["hits"]["hits"].map((hit: any) => hit._source);
+    const migrations: IMigration[] = response.body["hits"]["hits"].map(
+      (hit: any) => hit._source,
+    );
+    return searchTerm === undefined
+      ? migrations
+      : migrations.filter((m) => m[searchKey] === searchTerm);
   }
 
   /**
@@ -120,8 +130,7 @@ export class MigrationService {
     const available = await this.getAvailableMigrations();
     const applied = await this.getAppliedMigrations();
 
-    const appliedNames = applied.map((m) => m.name);
-    return available.filter((m) => !appliedNames.includes(m.name));
+    return available.filter((m) => !applied.some((n) => matches(m, n)));
   }
 
   /**
@@ -243,15 +252,12 @@ export class MigrationService {
    * Revert the last applied migration
    */
   async downMigration(): Promise<void> {
-    const applied = await this.getAppliedMigrations();
+    const lastMigration = await this.getLastMigration();
 
-    if (applied.length === 0) {
+    if (lastMigration === null) {
       console.log("No migrations to revert");
       return;
     }
-
-    const lastMigration = applied[applied.length - 1];
-    console.log(`Reverting migration: ${lastMigration.name}`);
 
     // Find the migration file
     const available = await this.getAvailableMigrations();
@@ -281,10 +287,129 @@ export class MigrationService {
         refresh: true,
       });
 
-      console.log(`Migration ${lastMigration.name} reverted successfully`);
+      console.log(
+        `Migration ${lastMigration.name} (${lastMigration.timestamp}) reverted successfully`,
+      );
     } catch (error) {
-      console.error(`Error reverting migration ${lastMigration.name}:`, error);
+      console.error(
+        `Error reverting migration ${lastMigration.name} (${lastMigration.timestamp}):`,
+        error,
+      );
       throw error;
     }
   }
+
+  /**
+   * Remove a migration from the index without rolling it back
+   */
+  async forgetMigration(name?: string | number) {
+    const migration = await (name === undefined
+      ? this.getLastMigration()
+      : this.findOneBy(name));
+
+    if (migration === null) {
+      console.log(
+        name === undefined
+          ? "No migrations to forget"
+          : `${name}: No matching applied migrations`,
+      );
+      return;
+    } else if (migration instanceof NotUniqueError) {
+      console.log(migration.message);
+      return;
+    }
+
+    try {
+      await this.deleteOne(migration);
+      console.log(`Migration ${migration.name} removed from migrations index`);
+    } catch (error) {
+      console.error(`Error forgetting migration ${migration.name}:`, error);
+      throw error;
+    }
+  }
+
+  private async getLastMigration(): Promise<IMigration | null> {
+    const applied = await this.getAppliedMigrations();
+    if (applied.length === 0) {
+      return null;
+    }
+    return applied[applied.length - 1];
+  }
+
+  private async findOneBy(
+    name: string | number,
+  ): Promise<IMigration | NotUniqueError | null> {
+    const migrations = await this.getAppliedMigrations(name);
+    switch (migrations.length) {
+      case 0:
+        return null;
+      case 1:
+        return migrations[0];
+      default:
+        return new NotUniqueError(name, migrations);
+    }
+  }
+
+  /** Remove the specified query from applied migrations.
+   *
+   * Throws an error if multiple migrations are deleted.
+   *
+   * @param migration
+   * @private
+   */
+  private async deleteOne(migration: IMigration): Promise<void> {
+    const result = await this.client.deleteByQuery(
+      this.deleteExactBody(migration),
+    );
+
+    if (result.body.deleted > 1) {
+      throw new Error(
+        `We seem to have forgotten ${result.body.deleted} migrations instead of one. ` +
+          "This is a bug. Please report.",
+      );
+    }
+  }
+
+  private deleteExactBody(migration: IMigration): DeleteByQuery {
+    return {
+      index: this.migrationIndex,
+      body: {
+        query: {
+          bool: {
+            filter: [
+              { term: { name: migration.name } },
+              { term: { timestamp: migration.timestamp } },
+            ],
+          },
+        },
+      },
+      refresh: true,
+    };
+  }
+}
+
+class NotUniqueError extends Error {
+  private readonly idThatCollided: string | number;
+  private readonly migrations: IMigration[];
+
+  constructor(idThatCollided: string | number, migrations: IMigration[]) {
+    if (migrations.length < 2) {
+      super(`Actually ${migrations.length} migration${migrations.length === 1 ? "" : "s"};
+      probably this shouldn't be an error.`);
+    } else {
+      const typeOfIdThatCollided =
+        typeof idThatCollided === "string" ? "name" : "timestamp";
+      const typeOfIdToAdd =
+        typeOfIdThatCollided === "name" ? "timestamp" : "name";
+      super(
+        `${typeOfIdThatCollided} '${idThatCollided}' refers to ${migrations.length} migrations. Specify a ${typeOfIdToAdd}: ${migrations.map((m) => m[typeOfIdToAdd])}.`,
+      );
+    }
+    this.idThatCollided = idThatCollided;
+    this.migrations = migrations;
+  }
+}
+
+export function matches(m1: IMigration, m2: IMigration) {
+  return m1.name === m2.name && m1.timestamp === m2.timestamp;
 }
