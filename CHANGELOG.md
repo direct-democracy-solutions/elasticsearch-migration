@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Package renamed from `@ahmetkasap/elasticsearch-migration` to `@direct-democracy-solutions/elasticsearch-migration`
--  contact names and urls
+- Contact names and urls
 - Generated migration scripts and example migration scripts use the new package name
 
 [unreleased]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/v1.0.1...master
