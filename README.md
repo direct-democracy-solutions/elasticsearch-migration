@@ -218,6 +218,7 @@ npm start
 npm run migrate -- create <name>   # Create new migration
 npm run migrate -- up              # Run pending migrations
 npm run migrate -- down            # Rollback last migration
+npm run migrate -- forget          # Forget last migration, skip rollback
 npm run migrate -- status          # Check migration status
 npm run migrate -- list-indices    # List all indices
 npm run migrate -- alias-info      # Show alias information
