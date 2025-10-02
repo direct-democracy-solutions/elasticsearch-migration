@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import { Command } from "commander";
-import { MigrationService } from "./services/migration.service.js";
-import type { IMigrationConfig } from "./types/migration.interface.js";
+import {Command} from "commander";
+import {MigrationService} from "./services/migration.service.js";
+import type {IMigrationConfig} from "./types/migration.interface.js";
 
 const program = new Command();
 
@@ -28,7 +28,7 @@ program
   .argument("<name>", "Migration name")
   .action(async (name) => {
     try {
-      const { createMigration } = await import("./cli/create.js");
+      const {createMigration} = await import("./cli/create.js");
       await createMigration(name, defaultConfig);
     } catch (error) {
       console.error("Error creating migration:", error);
@@ -144,10 +144,27 @@ program
   .description("Revert the last migration")
   .action(async () => {
     try {
-      const { downMigration } = await import("./cli/down.js");
+      const {downMigration} = await import("./cli/down.js");
       await downMigration();
     } catch (error) {
       console.error("Error running down migration:", error);
+      process.exit(1);
+    }
+  });
+
+program
+  .command("forget")
+  .summary("Forget an applied migration, skip rollback")
+  .description("Marks a migration as rolled back, without actually applying the rollback script.\n" +
+    "Can be used to repair the migration index if it is corrupt.\n\n" +
+    "Do not use this unless you know what you are doing.")
+  .argument("[migration]", "Name or timestamp of the migration to forget (defaults to the last migration).")
+  .action(async (name?: string) => {
+    try {
+      const {forgetMigration} = await import("./cli/forget.js");
+      await forgetMigration(name);
+    } catch (error) {
+      console.error("Error forgetting migration:", error);
       process.exit(1);
     }
   });

@@ -1,4 +1,4 @@
-import { Client } from "@opensearch-project/opensearch";
+import {Client} from "@opensearch-project/opensearch";
 import type {
   IMigration,
   IMigrationConfig,
@@ -25,9 +25,9 @@ export class MigrationService {
       auth:
         this.config.username && this.config.password
           ? {
-              username: this.config.username,
-              password: this.config.password,
-            }
+            username: this.config.username,
+            password: this.config.password,
+          }
           : undefined,
       ssl: {
         rejectUnauthorized: false, // For development environments
@@ -51,9 +51,9 @@ export class MigrationService {
         body: {
           mappings: {
             properties: {
-              name: { type: "keyword" },
-              timestamp: { type: "date" },
-              applied: { type: "date" },
+              name: {type: "keyword"},
+              timestamp: {type: "date"},
+              applied: {type: "date"},
             },
           },
         },
@@ -99,20 +99,27 @@ export class MigrationService {
 
   /**
    * Get applied migrations
+   *
+   * @param name filter to migrations with a particular name (or timestamp)
    */
-  async getAppliedMigrations(): Promise<any[]> {
+  async getAppliedMigrations(name?: string | number): Promise<any[]> {
     await this.init();
+    const searchTerm = name;
+    const searchKey = typeof name === 'string' ? 'name' : 'timestamp';
 
     // Get all applied migrations from .migrations index
     const response = await this.client.search({
       index: this.migrationIndex,
       body: {
         size: 1000,
-        sort: [{ timestamp: { order: "asc" } }],
+        sort: [{timestamp: {order: "asc"}}],
       },
     });
 
-    return response.body["hits"]["hits"].map((hit: any) => hit._source);
+    const migrations: IMigration[] = response.body["hits"]["hits"].map((hit: any) => hit._source);
+    return searchTerm === undefined
+      ? migrations
+      : migrations.filter((m) => m[searchKey] === searchTerm);
   }
 
   /**
@@ -122,8 +129,9 @@ export class MigrationService {
     const available = await this.getAvailableMigrations();
     const applied = await this.getAppliedMigrations();
 
-    const appliedNames = applied.map((m) => m.name);
-    return available.filter((m) => !appliedNames.includes(m.name));
+    return available.filter((m) =>
+      !applied.some((n) => matches(m, n))
+    );
   }
 
   /**
@@ -245,15 +253,12 @@ export class MigrationService {
    * Revert the last applied migration
    */
   async downMigration(): Promise<void> {
-    const applied = await this.getAppliedMigrations();
+    const lastMigration = await this.getLastMigration();
 
-    if (applied.length === 0) {
+    if (lastMigration === null) {
       console.log("No migrations to revert");
       return;
     }
-
-    const lastMigration = applied[applied.length - 1];
-    console.log(`Reverting migration: ${lastMigration.name}`);
 
     // Find the migration file
     const available = await this.getAvailableMigrations();
@@ -283,10 +288,88 @@ export class MigrationService {
         refresh: true,
       });
 
-      console.log(`Migration ${lastMigration.name} reverted successfully`);
+      console.log(`Migration ${lastMigration.name} (${lastMigration.timestamp}) reverted successfully`);
     } catch (error) {
-      console.error(`Error reverting migration ${lastMigration.name}:`, error);
+      console.error(`Error reverting migration ${lastMigration.name} (${lastMigration.timestamp}):`, error);
       throw error;
     }
   }
+
+  /**
+   * Remove a migration from the index without rolling it back
+   */
+  async forgetMigration(name?: string | number) {
+    const migrations = await (
+      name === undefined
+        ? await this.getLastMigration()
+        : this.getAppliedMigrations(name)
+    );
+
+    let migration: IMigration | null;
+    if (migrations === null) {
+      migration = null;
+    } else if (typeof migrations === "object" && 'length' in migrations) {
+      if (migrations.length === 0) {
+        migration = null;
+      } else if (migrations.length === 1) {
+        migration = migrations[0];
+      } else {
+        const typeOfIdThatCollided = typeof name === 'string' ? 'name' : 'timestamp';
+        const typeOfIdToAdd = typeOfIdThatCollided === 'name' ? 'timestamp' : 'name';
+        console.log(`${typeOfIdThatCollided} '${name}' refers to ${migrations.length} migrations. Specify a ${typeOfIdToAdd}: ${migrations.map(m => m[typeOfIdToAdd])}.`);
+        return;
+      }
+    } else {
+      migration = migrations;
+    }
+
+    if (migration === null) {
+      console.log(
+        name === undefined
+          ? "No migrations to forget"
+          : `${name}: No matching applied migrations`,
+      );
+      return;
+    }
+
+    try {
+      // Remove from applied migrations
+      const result = await this.client.deleteByQuery({
+        index: this.migrationIndex,
+        body: {
+          query: {
+            bool: {
+              filter: [
+                {term: {name: migration.name}},
+                {term: {timestamp: migration.timestamp}},
+              ],
+            },
+          },
+        },
+        refresh: true,
+      });
+
+      if (result.body.deleted > 1) {
+        throw new Error(`We seem to have forgotten ${result.body.deleted} migrations instead of one. ` +
+          'This is a bug. Your migration index may be corrupt now. Sorry.');
+      }
+
+      console.log(`Migration ${migration.name} removed from migrations index`);
+    } catch (error) {
+      console.error(`Error forgetting migration ${migration.name}:`, error);
+      throw error;
+    }
+  }
+
+  private async getLastMigration(): Promise<IMigration | null> {
+    const applied = await this.getAppliedMigrations();
+    if (applied.length === 0) {
+      return null;
+    }
+    return applied[applied.length - 1];
+  }
+}
+
+export function matches(m1: IMigration, m2: IMigration) {
+  return m1.name === m2.name && m1.timestamp === m2.timestamp;
 }

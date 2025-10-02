@@ -14,6 +14,7 @@
     "migrate:create": "tsx src/cli/create.ts",
     "migrate:up": "tsx src/cli/up.ts",
     "migrate:down": "tsx src/cli/down.ts",
+    "migrate:forget": "tsx src/cli/forget.ts",
     "migrate:status": "tsx src/cli/status.ts",
     "migrate:list-indices": "tsx src/cli/list-indices.ts",
     "migrate:alias-info": "tsx src/cli/alias-info.ts",
