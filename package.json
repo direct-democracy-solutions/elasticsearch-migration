@@ -17,7 +17,9 @@
     "migrate:status": "tsx src/cli/status.ts",
     "migrate:list-indices": "tsx src/cli/list-indices.ts",
     "migrate:alias-info": "tsx src/cli/alias-info.ts",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "dry-release": "npm run release -- --ci --no-npm.publish --no-git.requireCleanWorkingDir --dry-run",
+    "release": "release-it"
   },
   "keywords": [
     "elasticsearch",
@@ -46,6 +48,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "release-it": "^19.0.5",
     "tsx": "^4.7.0",
     "typescript": "^5.8.3"
   },
