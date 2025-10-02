@@ -1,5 +1,5 @@
 import { Client } from "@opensearch-project/opensearch";
-import type { IMigration } from "elastic-migrate";
+import type { IMigration } from "..";
 
 const migration: IMigration = {
 	name: "test_migration",
