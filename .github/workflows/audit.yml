@@ -1,0 +1,16 @@
+name: NPM Audit
+
+on:
+  schedule:
+    # Fridays 20:23 UTC / 12:23 PST / 13:23 PDT
+    - cron: "23 20 * * 5"
+  workflow_dispatch:
+
+jobs:
+  npm-audit:
+    name: "NPM Audit"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/set-up-ci
+      - run: npm audit
