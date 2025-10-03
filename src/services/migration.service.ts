@@ -73,11 +73,9 @@ export class MigrationService {
       return [];
     }
 
-    const files = fs
-      .readdirSync(migrationsDir)
-      .filter((file) => {
-        return /\.m?[tj]s$/.test(file);
-      });
+    const files = fs.readdirSync(migrationsDir).filter((file) => {
+      return /\.m?[tj]s$/.test(file);
+    });
 
     const migrations: IMigration[] = [];
 
@@ -188,7 +186,7 @@ export class MigrationService {
     });
 
     console.log(
-      `Found ${allMigrations.length} migrations ordered by creation date`
+      `Found ${allMigrations.length} migrations ordered by creation date`,
     );
 
     // Apply each migration one by one if not already applied
@@ -200,16 +198,16 @@ export class MigrationService {
       ) {
         console.log(
           `Migration "${migration.name}" (${new Date(
-            migration.timestamp
-          ).toISOString()}) already applied, skipping`
+            migration.timestamp,
+          ).toISOString()}) already applied, skipping`,
         );
         continue;
       }
 
       console.log(
         `Applying migration "${migration.name}" (${new Date(
-          migration.timestamp
-        ).toISOString()})`
+          migration.timestamp,
+        ).toISOString()})`,
       );
       await this.applyMigration(migration);
     }
@@ -261,7 +259,7 @@ export class MigrationService {
 
     if (!migration || !migration.down) {
       console.log(
-        `Migration ${lastMigration.name} cannot be reverted (no down method)`
+        `Migration ${lastMigration.name} cannot be reverted (no down method)`,
       );
       return;
     }
