@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/set-up-ci
+      - run: npx prettier --check .
+      - run: npm run lint -- --max-warnings 0
+
+  test:
+    strategy:
+      max-parallel: 1
+      matrix:
+        node-version: [20.9.0, 20, 22, 24]
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/set-up-ci
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: docker compose up --wait
+      - run: npm run build
+      - run: cp ci.env .env
+      - run: npm test
+        if: ${{ matrix.node-version != '20.9.0' }}
+      - run: npm run test:node20
+        if: ${{ matrix.node-version == '20.9.0' }}
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/set-up-ci
+      - run: npm run build
+
+  release-dry-run:
+    runs-on: ubuntu-latest
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_PUBLISH_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: ./.github/actions/set-up-ci
+      - name: Configure NPM auth
+        run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+      - run: npm publish --dry-run
+      - run: npm run release -- --dry-run
