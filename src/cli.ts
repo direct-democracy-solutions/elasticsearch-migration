@@ -152,4 +152,26 @@ program
     }
   });
 
+program
+  .command("forget")
+  .summary("Forget an applied migration, skip rollback")
+  .description(
+    "Deletes a migration from the list of those already applied, without " +
+      "applying the rollback script. Can be used to repair the migration " +
+      "index if it is corrupt.\n\nDo not use this unless you know what you are doing.",
+  )
+  .argument(
+    "[migration]",
+    "Name or timestamp of the migration to forget (defaults to the last migration).",
+  )
+  .action(async (name?: string) => {
+    try {
+      const { forgetMigration } = await import("./cli/forget.js");
+      await forgetMigration(name);
+    } catch (error) {
+      console.error("Error forgetting migration:", error);
+      process.exit(1);
+    }
+  });
+
 program.parse();

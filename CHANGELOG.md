@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- New command `es-migrate forget`, an advanced command that can help
+  repair a corrupted migration index. `forget` will remove an applied
+  migration from the index without running its rollback script.
+
 ### Changed
 
 - An auto-formatter has been applied to all source code. This will
