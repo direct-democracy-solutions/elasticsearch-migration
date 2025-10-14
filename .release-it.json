@@ -10,7 +10,8 @@
     }
   },
   "npm": {
-    "publish": true
+    "publish": true,
+    "skipChecks": true
   },
   "hooks": {
     "after:bump": "npm run build"
