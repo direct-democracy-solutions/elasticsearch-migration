@@ -15,9 +15,7 @@
     "start": "node dist/index.js",
     "migrate": "tsx src/cli.ts",
     "test": "node --experimental-vm-modules --disable-warning=ExperimentalWarning node_modules/jest/bin/jest.js",
-    "test:node20": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "prepublishOnly": "npm run build",
-    "dry-release": "npm run release -- --ci --no-npm.publish --no-git.requireCleanWorkingDir --dry-run",
     "release": "release-it",
     "pre-commit": "npm ci && eslint --max-warnings=0 && prettier --check . && npm run build && test"
   },
@@ -71,5 +69,15 @@
   ],
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">= 20.17.0"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": "^10.9.3 || ^11.5.1"
+    }
   }
 }

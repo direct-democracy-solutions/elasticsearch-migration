@@ -7,7 +7,12 @@ on:
   pull_request:
     branches:
       - master
+
   workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   lint:
@@ -15,45 +20,55 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/set-up-ci
+        with:
+          node-version: lts/*
       - run: npx prettier --check .
       - run: npm run lint -- --max-warnings 0
 
   test:
     strategy:
       matrix:
-        node-version: [20.9.0, 20, 22, 24]
+        # 18.14.0 is the earliest we can successfully run with Jest
+        node-version: [18.14.0, 18, 20, 22, 24, latest]
 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/set-up-ci
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: lts/*
       - run: docker compose up --wait
       - run: npm run build
       - run: cp ci.env .env
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: "package-lock.json"
       - run: npm test
-        if: ${{ matrix.node-version != '20.9.0' }}
-      - run: npm run test:node20
-        if: ${{ matrix.node-version == '20.9.0' }}
+        if: ${{ matrix.node-version != '18.14.0' && matrix.node-version != '18' }}
+      - name: test
+        run: node --experimental-vm-modules node_modules/jest/bin/jest.js
+        shell: "bash"
+        if: ${{matrix.node-version == '18.14.0' || matrix.node-version == '18' }}
 
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/set-up-ci
+        with:
+          node-version: lts/*
       - run: npm run build
 
   release-dry-run:
     runs-on: ubuntu-latest
-    env:
-      NPM_TOKEN: ${{ secrets.NPM_PUBLISH_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
       - uses: ./.github/actions/set-up-ci
-      - name: Configure NPM auth
-        run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
-      - run: npm publish --dry-run
-      - run: npm run release -- --dry-run
+        with:
+          node-version: lts/*
+      - run: npm --version
+      - run: npm run release -- --ci --no-git.requireCleanWorkingDir --dry-run
