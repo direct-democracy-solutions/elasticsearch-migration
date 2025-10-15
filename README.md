@@ -97,7 +97,7 @@ You can configure the tool using environment variables:
 
 ```env
 # Elasticsearch connection details
-ELASTIC_SEARCH_NODE=http://localhost:9200
+ELASTIC_SEARCH_NODE=http://127.0.0.1:9200
 ELASTIC_SEARCH_USERNAME=elastic
 ELASTIC_SEARCH_PASSWORD=password
 
@@ -153,7 +153,7 @@ import { MigrationService } from "@direct-democracy-solutions/elasticsearch-migr
 import type { IMigrationConfig } from "@direct-democracy-solutions/elasticsearch-migration";
 
 const config: IMigrationConfig = {
-  node: "http://localhost:9200",
+  node: "http://127.0.0.1:9200",
   username: "elastic",
   password: "password",
   migrationsPath: "./migrations",

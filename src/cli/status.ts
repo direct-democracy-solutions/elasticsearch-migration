@@ -8,7 +8,7 @@ async function showStatus() {
 
     // Configuration from environment variables
     const config: IMigrationConfig = {
-      node: process.env.ELASTIC_SEARCH_NODE || "http://localhost:9200",
+      node: process.env.ELASTIC_SEARCH_NODE || "http://127.0.0.1:9200",
       username: process.env.ELASTIC_SEARCH_USERNAME,
       password: process.env.ELASTIC_SEARCH_PASSWORD,
       migrationsPath: process.env.MIGRATIONS_PATH || "./migrations",

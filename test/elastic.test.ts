@@ -10,7 +10,7 @@ describe("E2E Tests", () => {
   const migrationIndex = ".test-migrations";
 
   const testConfig: IMigrationConfig = {
-    node: process.env.ELASTIC_SEARCH_NODE || "http://localhost:9200",
+    node: process.env.ELASTIC_SEARCH_NODE || "http://127.0.0.1:9200",
     username: process.env.ELASTIC_SEARCH_USERNAME,
     password: process.env.ELASTIC_SEARCH_PASSWORD,
     migrationsPath: path.resolve(import.meta.dirname, "..", "migrations"),
