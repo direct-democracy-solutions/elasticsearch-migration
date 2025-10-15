@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- The default Elasticsearch host, `localhost`, is not properly resolved
+  on Node 18. Changed it to `127.0.0.1` so it should work now.
+
 ## [1.1.1] - 2025-10-14
 
 ### Changed
