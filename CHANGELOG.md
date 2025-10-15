@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.2] - 2025-10-15
+
 ### Fixed
 
 - The default Elasticsearch host, `localhost`, is not properly resolved
@@ -51,7 +53,8 @@ Improves support for CommonJS projects
 - Contact names and urls
 - Generated migration scripts and example migration scripts use the new package name
 
+[1.1.2]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/1.0.1...1.1.0
 [1.0.1]: https://github.com/direct-democracy-solutions/elasticsearch-migration/releases/tag/1.0.1
-[unreleased]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/1.1.1...HEAD
+[unreleased]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/1.1.2...HEAD
