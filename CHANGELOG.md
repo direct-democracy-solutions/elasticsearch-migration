@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-10-16
+
 ### Added
 
 - New command `es-migrate forget`, an advanced command that can help
@@ -59,8 +61,9 @@ Improves support for CommonJS projects
 - Contact names and urls
 - Generated migration scripts and example migration scripts use the new package name
 
+[1.2.0]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/1.1.2...1.2.0
 [1.1.2]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/1.0.1...1.1.0
 [1.0.1]: https://github.com/direct-democracy-solutions/elasticsearch-migration/releases/tag/1.0.1
-[unreleased]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/1.1.2...HEAD
+[unreleased]: https://github.com/direct-democracy-solutions/elasticsearch-migration/compare/1.2.0...HEAD
