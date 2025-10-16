@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- README now has a Node.js compatibility section to help users make sure
+  Node loads and runs their TypeScript migrations correctly.
+
 ## [1.2.0] - 2025-10-16
 
 ### Added

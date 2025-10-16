@@ -146,6 +146,46 @@ export default migration;
 
 ---
 
+## ⚠️ TypeScript/Node.js Compatibility
+
+For an effortless runtime experience on recent versions of Node,
+restrict your migrations to use only
+[erasable syntax](https://www.typescriptlang.org/tsconfig/#erasableSyntaxOnly).
+
+If you want to enforce this automatically, set the `erasableSyntaxOnly`
+option in `tsconfig.json`.
+
+### Node 22.6 or later with all erasable syntax
+
+TypeScript migrations with no erasable syntax work out of the box on **Node v22.18.0** or later.
+
+To run TypeScript migrations on Node versions **v22.6-v22.17**, Invoke Node with `--experimental-strip-types`:
+
+```bash
+npx --node-options='--experimental-strip-types' es-migrate up
+```
+
+### Node 22.7 or later with non-erasable syntax
+
+To run TypeScript migrations with **non-erasable syntax** on **v22.7.0** or later, invoke Node with `--experimental-transform-types`:
+
+```bash
+npx --node-options='--experimental-strip-types' es-migrate up
+```
+
+### All supported Node versions
+
+If neither of the above options is available to you, there is always `tsx` or `ts-node`:
+
+```bash
+npm i -D tsx
+tsx es-migrate up
+```
+
+Or, you can write your migrations in JavaScript.
+
+---
+
 ## 🧑‍💻 Programmatic Usage
 
 ```typescript
