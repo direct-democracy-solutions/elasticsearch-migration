@@ -1,0 +1,10 @@
+name: Test Sudo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-sudo:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo echo 'hello sudo'
