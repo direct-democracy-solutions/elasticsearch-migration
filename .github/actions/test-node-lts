@@ -1,0 +1,28 @@
+name: "Setup"
+description: "Set up Node and install project dependencies"
+inputs:
+  node-version:
+    description: Node version to set up
+    # This shouldn't be required; but in practice node-version must be
+    # set on Linux runners; otherwise updating NPM will fail.
+    #
+    # See https://github.com/actions/setup-node/issues/1409. When fixed,
+    # this can be set back to false and then "node-version" will default
+    # to whatever is specified "node-version-file".
+    required: true
+  npm-version:
+    description: NPM version to use for the package
+    default: 11.5.1
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        check-latest: true
+        cache: "npm"
+        cache-dependency-path: "package-lock.json"
+    - name: install latest npm
+      run: npm install -g npm@${{ inputs.npm-version }}
+      shell: "bash"
