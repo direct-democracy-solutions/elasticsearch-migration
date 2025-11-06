@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Supports Node 25
 - README now has a Node.js compatibility section to help users make sure
   Node loads and runs their TypeScript migrations correctly.
 
