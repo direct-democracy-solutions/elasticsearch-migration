@@ -29,10 +29,12 @@ export default defineConfig([
     extends: ["json/recommended"],
     ignores: ["package-lock.json"],
   },
-  {
-    files: ["**/*.md"],
-    plugins: { markdown },
-    language: "markdown/gfm",
-    extends: ["markdown/recommended"],
-  },
+  // TODO re-enable whenever @eslint/markdown supports ESLint v10:
+  // https://github.com/eslint/markdown/issues/621
+  // {
+  //   files: ["**/*.md"],
+  //   plugins: { markdown },
+  //   language: "markdown/gfm",
+  //   extends: ["markdown/recommended"],
+  // },
 ]);
