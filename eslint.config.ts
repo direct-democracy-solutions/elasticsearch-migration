@@ -2,7 +2,7 @@ import js from "@eslint/js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 import json from "@eslint/json";
-// import markdown from "@eslint/markdown";
+import markdown from "@eslint/markdown";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
@@ -29,12 +29,10 @@ export default defineConfig([
     extends: ["json/recommended"],
     ignores: ["package-lock.json"],
   },
-  // TODO re-enable whenever @eslint/markdown supports ESLint v10:
-  // https://github.com/eslint/markdown/issues/621
-  // {
-  //   files: ["**/*.md"],
-  //   plugins: { markdown },
-  //   language: "markdown/gfm",
-  //   extends: ["markdown/recommended"],
-  // },
+  {
+    files: ["**/*.md"],
+    plugins: { markdown },
+    language: "markdown/gfm",
+    extends: ["markdown/recommended"],
+  },
 ]);
