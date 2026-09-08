@@ -47,7 +47,7 @@
     "@eslint/js": "^9.36.0",
     "@eslint/json": "^1.0.1",
     "@eslint/markdown": "^8.0.0",
-    "@release-it/keep-a-changelog": "^7.1.0",
+    "@release-it/keep-a-changelog": "^8.0.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.14.0",
     "eslint": "^10.0.1",
